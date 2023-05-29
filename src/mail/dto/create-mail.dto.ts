@@ -13,4 +13,6 @@ export class CreateEmailReDto {
     })
     @IsNotEmpty()
     readonly name: string;
+
+    readonly texte:string;
 }

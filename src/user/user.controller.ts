@@ -133,6 +133,9 @@ export class UserController {
   //   }
   // }
 
+
+ @ApiBearerAuth('access-token')
+  @UseGuards(AccessTokenGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
@@ -204,9 +207,32 @@ export class UserController {
   @Post("mail")
   async signUp(@Body() req:CreateEmailReDto) {
     const token = Math.floor(1000 + Math.random() * 9000).toString();
-    const user={name:req.name,email:req.email}
+    const user={name:req.name,email:req.email,}
     console.log("*****USER*****",user)
     await this.userService.sendUserConfirmation(user, token);
     console.log("*****USER:TOKEN*********",token)
   }
+
+
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+         email: { type: 'string' }
+      }
+    }
+  }
+  )
+  @Post("reserPassord")
+  async reset(@Body() req:CreateEmailReDto) {
+    const token = Math.floor(1000 + Math.random() * 9000).toString();
+    const user={name:req.name,email:req.email,texte:req.texte}
+    console.log("*****USER*****",user)
+    await this.userService.reset(user, token);
+    console.log("*****USER:TOKEN*********",token)
+  }
+
+
+
 }
